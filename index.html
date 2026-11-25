@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sondage Mondelēz — Groupe 1</title>
+<meta name="description" content="Sondage en direct pour l'oral Mondelēz International, ICN Business School, cours PPDE3017.">
+<meta name="theme-color" content="#4a2c1d">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%234a2c1d'/><circle cx='16' cy='16' r='9' fill='%23fbf3e4'/></svg>">
+<style>
+  :root{
+    --chocolat:#4a2c1d;
+    --chocolat-fonce:#351f14;
+    --caramel:#d99a3e;
+    --rose:#e4637f;
+    --creme:#fbf3e4;
+    --creme-vive:#fffaf0;
+    --gouttiere:clamp(14px,4vw,28px);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  /* .bouton impose display:block, qui l'emporterait sur le display:none
+     par defaut de [hidden] : sans ce !important, masquer un bouton avec
+     hidden resterait sans effet. */
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background-color:var(--creme);
+    /* grain de papier : un bruit fractal calcule par le navigateur,
+       trois cents octets au lieu d'une image */
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.32 0 0 0 0 0.20 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23g)'/%3E%3C/svg%3E");
+    color:var(--chocolat);
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+  }
+  ::selection{background:var(--caramel);color:var(--chocolat-fonce)}
+
+  .page{max-width:620px;margin:0 auto;padding:var(--gouttiere) var(--gouttiere) 48px}
+  .defs{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* ---------- en-tete ---------- */
+  header{
+    border:3px solid var(--chocolat);
+    background:var(--creme-vive);
+    box-shadow:7px 7px 0 var(--chocolat);
+    padding:20px 18px;
+    margin-bottom:26px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .visuel{flex:0 0 88px;width:88px;display:block}
+  .visuel svg{width:100%;height:auto;display:block}
+  header h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(1.3rem,4.8vw,1.75rem);
+    line-height:1.15;
+    font-weight:700;
+  }
+  .surtitre{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+  .soustitre{font-size:.82rem;margin-top:7px}
+
+  .consigne{border-left:6px solid var(--caramel);padding:9px 0 9px 13px;font-size:.9rem;margin-bottom:22px}
+
+  /* ---------- questions ---------- */
+  fieldset{
+    border:3px solid var(--chocolat);
+    background:var(--creme-vive);
+    box-shadow:6px 6px 0 var(--caramel);
+    padding:16px 15px 14px;
+    margin-bottom:24px;
+  }
+  legend{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1.02rem;font-weight:700;
+    background:var(--chocolat);color:var(--creme);
+    padding:5px 11px;margin-left:-3px;
+  }
+  .numero{font-size:.78rem;letter-spacing:.1em;opacity:.8;margin-right:7px}
+  .aide{font-size:.78rem;opacity:.75;margin:9px 0 2px}
+
+  .options{list-style:none;margin-top:11px;display:grid;gap:8px}
+  .options label{
+    display:flex;align-items:center;gap:10px;
+    border:2px solid var(--chocolat);
+    background:var(--creme);
+    padding:10px 12px;cursor:pointer;font-size:.95rem;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .options input{
+    appearance:none;-webkit-appearance:none;
+    flex:0 0 18px;width:18px;height:18px;
+    border:2px solid var(--chocolat);
+    background:var(--creme-vive);margin:0;cursor:pointer;
+  }
+  .options input[type=radio]{border-radius:50%}
+  .options input:checked{background:var(--rose);box-shadow:inset 0 0 0 3px var(--creme-vive)}
+  .options label:has(input:checked){background:var(--caramel);box-shadow:3px 3px 0 var(--chocolat)}
+  .options input:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+
+  /* ---------- boutons ---------- */
+  .bouton{
+    display:block;width:100%;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:1rem;font-weight:700;
+    padding:15px 16px;
+    border:3px solid var(--chocolat);
+    background:var(--rose);
+    color:var(--creme-vive);
+    box-shadow:6px 6px 0 var(--chocolat);
+    cursor:pointer;
+  }
+  .bouton:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--chocolat)}
+  .bouton:focus-visible{outline:3px solid var(--caramel);outline-offset:3px}
+  .bouton[disabled]{opacity:.55;cursor:default}
+  .bouton-secondaire{
+    background:transparent;color:var(--chocolat);
+    box-shadow:4px 4px 0 var(--chocolat);
+    margin-top:18px;font-size:.95rem;
+  }
+
+  .erreur{color:var(--rose);font-weight:700;font-size:.9rem;margin-top:14px}
+  .erreur:empty{display:none}
+
+  #merci{
+    border:3px solid var(--chocolat);
+    background:var(--caramel);
+    box-shadow:7px 7px 0 var(--chocolat);
+    padding:20px 18px;
+  }
+  #merci h2{font-family:Georgia,"Times New Roman",serif;font-size:1.25rem;margin-bottom:8px}
+  #merci p{font-size:.92rem}
+
+  /* ---------- resultats ---------- */
+  #resultats{display:none;margin-top:36px}
+  #resultats > h2{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(1.3rem,4.6vw,1.6rem);
+    border-bottom:4px solid var(--chocolat);
+    padding-bottom:7px;
+  }
+  .etat{font-size:.8rem;opacity:.8;margin:9px 0 26px}
+
+  .bloc-resultat{margin-bottom:32px}
+  .bloc-resultat h3{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1rem;font-weight:700;margin-bottom:14px;
+    border-left:6px solid var(--rose);padding-left:11px;
+  }
+  /* Une ligne par question : 3 options sur 3 colonnes, 4 sur 4, les
+     8 marques de Q1 sur deux rangees de 4. */
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:16px 10px}
+  .grille[data-n="3"]{grid-template-columns:repeat(3,1fr)}
+  .grille[data-n="4"]{grid-template-columns:repeat(4,1fr)}
+  .grille[data-n="8"]{grid-template-columns:repeat(4,1fr)}
+  .cellule{text-align:center}
+  .cellule svg{width:100%;height:auto;max-width:112px;display:block;margin:0 auto}
+  .pourcent{font-family:Georgia,"Times New Roman",serif;font-size:1.15rem;font-weight:700;margin-top:6px;line-height:1.1}
+  .etiquette{font-size:.76rem;line-height:1.25;margin-top:2px;overflow-wrap:break-word}
+
+  .creme-monte{
+    transform:translateY(90px);
+    transition:transform .8s cubic-bezier(.22,.61,.36,1);
+  }
+  .sans-transition .creme-monte{transition:none}
+
+  footer{margin-top:40px;border-top:3px solid var(--chocolat);padding-top:13px;font-size:.74rem;opacity:.8}
+
+  /* Vue projection (adresse suivie de ?resultat) : tout grossit pour
+     rester lisible du fond de la salle. */
+  body.ecran .page{max-width:1180px}
+  body.ecran header{margin-bottom:18px}
+  body.ecran .cellule svg{max-width:152px}
+  body.ecran .pourcent{font-size:1.7rem;margin-top:10px}
+  body.ecran .etiquette{font-size:1rem}
+  body.ecran .bloc-resultat{margin-bottom:42px}
+  body.ecran .bloc-resultat h3{font-size:1.35rem}
+  body.ecran #resultats > h2{font-size:2.2rem}
+  body.ecran .etat{font-size:.95rem}
+  body.ecran .grille{gap:20px 26px;justify-content:center}
+  body.ecran .grille[data-n="3"]{grid-template-columns:repeat(3,180px)}
+  body.ecran .grille[data-n="4"]{grid-template-columns:repeat(4,180px)}
+  @media (min-width:900px){
+    body.ecran .grille[data-n="8"]{grid-template-columns:repeat(8,minmax(0,1fr))}
+  }
+
+  @media (max-width:420px){
+    header{flex-direction:column;align-items:flex-start;gap:12px}
+    .grille{gap:12px 7px}
+    .cellule svg{max-width:96px}
+    .pourcent{font-size:1.05rem}
+    .etiquette{font-size:.72rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .creme-monte{transition:none}
+    .bouton:active{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- Matiere des biscuits : un bruit fractal eclaire par une lumiere
+     rasante, calcule par le navigateur. Declaree une fois, reprise par
+     tous les biscuits. -->
+<svg class="defs" aria-hidden="true" focusable="false"><defs>
+  <filter id="f-cacao" x="0%" y="0%" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="4" seed="11" result="n"/>
+    <feDiffuseLighting in="n" lighting-color="#4a2c1d" surfaceScale="0.55" diffuseConstant="1.18">
+      <feDistantLight azimuth="235" elevation="70"/>
+    </feDiffuseLighting>
+  </filter>
+  <filter id="f-puits" x="0%" y="0%" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="3" seed="4" result="n"/>
+    <feDiffuseLighting in="n" lighting-color="#301c12" surfaceScale="0.5" diffuseConstant="1.15">
+      <feDistantLight azimuth="235" elevation="68"/>
+    </feDiffuseLighting>
+  </filter>
+  <filter id="f-creme" x="0%" y="0%" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.9" numOctaves="2" seed="2" result="n"/>
+    <feDiffuseLighting in="n" lighting-color="#fbf3e4" surfaceScale="0.4" diffuseConstant="1.06">
+      <feDistantLight azimuth="235" elevation="72"/>
+    </feDiffuseLighting>
+  </filter>
+
+  <pattern id="t-cacao" patternUnits="userSpaceOnUse" width="105" height="105">
+    <rect width="105" height="105" filter="url(#f-cacao)"/></pattern>
+  <pattern id="t-puits" patternUnits="userSpaceOnUse" width="105" height="105">
+    <rect width="105" height="105" filter="url(#f-puits)"/></pattern>
+  <pattern id="t-creme" patternUnits="userSpaceOnUse" width="105" height="105">
+    <rect width="105" height="105" filter="url(#f-creme)"/></pattern>
+
+  <radialGradient id="creux" cx="50%" cy="44%" r="54%">
+    <stop offset="66%" stop-color="#2a170e" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#2a170e" stop-opacity=".55"/>
+  </radialGradient>
+
+  <clipPath id="puits"><circle cx="52" cy="52" r="33"/></clipPath>
+
+  <!-- les deux contours du biscuit, calcules au demarrage -->
+  <path id="galette"></path>
+  <path id="couronne" fill-rule="evenodd"></path>
+</defs></svg>
+
+<div class="page">
+
+<header>
+  <span class="visuel" id="visuel-entete"></span>
+  <div>
+    <p class="surtitre">ICN Business School · PPDE3017</p>
+    <h1>Sondage en direct<br>Mondelēz International</h1>
+    <p class="soustitre">Groupe 1 — Tamara, Juliane, Ilian, Yago</p>
+  </div>
+</header>
+
+<p class="consigne">Cinq questions, moins d'une minute. Un seul vote par téléphone. Les résultats s'affichent au tableau.</p>
+
+<section id="bloc-vote">
+  <form id="sondage" novalidate>
+
+    <fieldset>
+      <legend><span class="numero">Q1</span>Marques connues</legend>
+      <p class="aide">Parmi ces marques, lesquelles connaissez-vous ? Plusieurs réponses possibles.</p>
+      <div class="options">
+        <label><input type="checkbox" name="q1" value="Oreo"> Oreo</label>
+        <label><input type="checkbox" name="q1" value="LU"> LU</label>
+        <label><input type="checkbox" name="q1" value="Milka"> Milka</label>
+        <label><input type="checkbox" name="q1" value="Côte d'Or"> Côte d'Or</label>
+        <label><input type="checkbox" name="q1" value="Prince"> Prince</label>
+        <label><input type="checkbox" name="q1" value="Tuc"> Tuc</label>
+        <label><input type="checkbox" name="q1" value="Toblerone"> Toblerone</label>
+        <label><input type="checkbox" name="q1" value="Aucune"> Aucune</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="numero">Q2</span>Travailler chez Mondelēz</legend>
+      <p class="aide">Aimeriez-vous travailler chez Mondelēz après vos études ?</p>
+      <div class="options">
+        <label><input type="radio" name="q2" value="Oui"> Oui</label>
+        <label><input type="radio" name="q2" value="Peut-être"> Peut-être</label>
+        <label><input type="radio" name="q2" value="Non"> Non</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="numero">Q3</span>Fréquence d'achat</legend>
+      <p class="aide">À quelle fréquence achetez-vous du chocolat ou des biscuits ?</p>
+      <div class="options">
+        <label><input type="radio" name="q3" value="Chaque semaine"> Chaque semaine</label>
+        <label><input type="radio" name="q3" value="Chaque mois"> Chaque mois</label>
+        <label><input type="radio" name="q3" value="Rarement"> Rarement</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="numero">Q4</span>Critère employeur</legend>
+      <p class="aide">Quel critère compte le plus pour vous chez un employeur ?</p>
+      <div class="options">
+        <label><input type="radio" name="q4" value="Salaire"> Salaire</label>
+        <label><input type="radio" name="q4" value="Évolution"> Évolution</label>
+        <label><input type="radio" name="q4" value="Impact"> Impact</label>
+        <label><input type="radio" name="q4" value="Ambiance"> Ambiance</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="numero">Q5</span>Engagements RSE</legend>
+      <p class="aide">Selon vous, Mondelēz tient-il ses engagements RSE ?</p>
+      <div class="options">
+        <label><input type="radio" name="q5" value="Oui"> Oui</label>
+        <label><input type="radio" name="q5" value="Partiellement"> Partiellement</label>
+        <label><input type="radio" name="q5" value="Non"> Non</label>
+        <label><input type="radio" name="q5" value="Sans avis"> Sans avis</label>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="bouton" id="envoyer">Envoyer mon vote</button>
+    <p class="erreur" id="erreur" role="status" aria-live="polite"></p>
+  </form>
+
+  <button type="button" class="bouton bouton-secondaire" id="revele">Voir le résultat du sondage</button>
+</section>
+
+<section id="merci" hidden>
+  <h2>Merci, c'est enregistré.</h2>
+  <p>Votre vote compte dans les résultats affichés au tableau.</p>
+  <button type="button" class="bouton bouton-secondaire" id="revele-merci">Voir le résultat du sondage</button>
+</section>
+
+<section id="resultats" aria-live="polite">
+  <h2>Résultats du sondage</h2>
+  <p class="etat" id="etat-resultats">Chargement…</p>
+  <div id="blocs"></div>
+</section>
+
+<footer>
+  <p>Oral de groupe PPDE3017 « My future career » · ICN Business School. Page réalisée par le groupe 1 pour le cours ; aucune affiliation avec Mondelēz International. Illustrations dessinées pour cette page.</p>
+</footer>
+
+</div>
+
+<script>
+/* ==================================================================
+   CONFIGURATION — les deux seules lignes à remplir, voir LISEZMOI
+   section 3. Tant que le mot VOTRE-PROJET est là, la page marche
+   mais n'enregistre rien et annonce « Résultats indisponibles » :
+   elle n'invente jamais de chiffres.
+   ================================================================== */
+var ADRESSE = "https://VOTRE-PROJET.supabase.co";
+var CLE     = "VOTRE-CLE-PUBLIQUE";
+var TABLE   = "votes";
+/* ================================================================== */
+
+var CLE_VOTE = "mondelez_groupe1_vote";
+var DELAI_RAFRAICHISSEMENT = 5000;
+
+/* Un seul fichier, deux usages. Les téléphones ouvrent l'adresse nue :
+   ils votent, et ne voient jamais les résultats. L'écran de projection
+   ouvre la même adresse suivie de ?resultat. */
+var MODE_ECRAN = location.search.indexOf("resultat") !== -1;
+
+function configuree(){ return ADRESSE.indexOf("VOTRE-PROJET") === -1; }
+function pointDeCollecte(){ return ADRESSE.replace(/\/+$/, "") + "/rest/v1/" + TABLE; }
+function entetes(){
+  return {"apikey": CLE, "Authorization": "Bearer " + CLE, "Content-Type": "application/json"};
+}
+
+var QUESTIONS = [
+  {id:"q1", type:"multi",  titre:"Q1 — Marques connues",            options:["Oreo","LU","Milka","Côte d'Or","Prince","Tuc","Toblerone","Aucune"]},
+  {id:"q2", type:"unique", titre:"Q2 — Travailler chez Mondelēz",   options:["Oui","Peut-être","Non"]},
+  {id:"q3", type:"unique", titre:"Q3 — Fréquence d'achat",          options:["Chaque semaine","Chaque mois","Rarement"]},
+  {id:"q4", type:"unique", titre:"Q4 — Critère employeur",          options:["Salaire","Évolution","Impact","Ambiance"]},
+  {id:"q5", type:"unique", titre:"Q5 — Engagements RSE",            options:["Oui","Partiellement","Non","Sans avis"]}
+];
+
+/* Course utile de la crème, en unités du viewBox 0 0 105 105. */
+var COURSE_CREME = 68;
+var REPOS_CREME = 90;
+
+/* ------------------------------------------------------------------
+   Contour du biscuit : un disque de rayon 47,5 centré en 52,52, dont
+   le bord ondule en 38 cannelures. « galette » est plein, il sert
+   d'ombre portée ; « couronne » est le même contour perforé au centre,
+   posé par-dessus la crème pour la border proprement.
+   ------------------------------------------------------------------ */
+function contour(rInterieur){
+  var cx = 52, cy = 52, rExt = 47.5, dents = 38, creux = 1.7, pas = 200;
+  var p = "", i, a, r;
+  for(i = 0; i <= pas; i++){
+    a = i * 2 * Math.PI / pas;
+    r = rExt - creux * (0.5 + 0.5 * Math.cos(dents * a));
+    p += (i ? "L" : "M") + (cx + r * Math.cos(a)).toFixed(2) + " " + (cy + r * Math.sin(a)).toFixed(2);
+  }
+  p += "Z";
+  if(rInterieur > 0){
+    p += "M" + (cx + rInterieur) + " " + cy +
+         "A" + rInterieur + " " + rInterieur + " 0 1 0 " + (cx - rInterieur) + " " + cy +
+         "A" + rInterieur + " " + rInterieur + " 0 1 0 " + (cx + rInterieur) + " " + cy + "Z";
+  }
+  return p;
+}
+
+function tracerContours(){
+  document.getElementById("galette").setAttribute("d", contour(0));
+  document.getElementById("couronne").setAttribute("d", contour(32.3));
+}
+
+/* ------------------------------------------------------------------
+   Identifiants : <id>-c porte la crème animée, <id>-t le texte du
+   pourcentage, où <id> vaut {question}-{rang}, par exemple q2-0.
+   ------------------------------------------------------------------ */
+function biscuitSVG(id, etiquette){
+  return '' +
+    '<svg viewBox="0 0 105 105" role="img" aria-label="' + echapper(etiquette) + '">' +
+      '<use href="#galette" fill="#2a170e" transform="translate(4.5,4.5)"/>' +
+      '<circle cx="52" cy="52" r="33.4" fill="url(#t-puits)"/>' +
+      '<g clip-path="url(#puits)">' +
+        '<g class="creme-monte" id="' + id + '-c">' +
+          '<rect x="16" y="18" width="72" height="70" fill="url(#t-creme)"/>' +
+        '</g>' +
+      '</g>' +
+      '<circle cx="52" cy="52" r="33.4" fill="url(#creux)"/>' +
+      '<use href="#couronne" fill="url(#t-cacao)"/>' +
+    '</svg>';
+}
+
+function echapper(t){
+  return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+                  .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function cleOption(qid, index){ return qid + "-" + index; }
+
+function construireBlocs(){
+  var html = "";
+  QUESTIONS.forEach(function(q){
+    html += '<div class="bloc-resultat"><h3>' + echapper(q.titre) +
+            '</h3><div class="grille" data-n="' + q.options.length + '">';
+    q.options.forEach(function(opt, i){
+      var id = cleOption(q.id, i);
+      html += '<div class="cellule">' + biscuitSVG(id, opt) +
+              '<p class="pourcent" id="' + id + '-t">—</p>' +
+              '<p class="etiquette">' + echapper(opt) + '</p></div>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById("blocs").innerHTML = html;
+}
+
+function construireEntete(){
+  document.getElementById("visuel-entete").innerHTML =
+    biscuitSVG("entete", "Biscuit rond fourré à la crème");
+  var creme = document.getElementById("entete-c");
+  if(creme){ creme.style.transform = "translateY(0px)"; }
+}
+
+/* ------------------------------------------------------------------
+   Vote
+   ------------------------------------------------------------------ */
+function dejaVote(){
+  try{ return localStorage.getItem(CLE_VOTE) !== null; }catch(e){ return false; }
+}
+
+function marquerVote(){
+  try{ localStorage.setItem(CLE_VOTE, new Date().toISOString()); }catch(e){}
+}
+
+function lireFormulaire(){
+  var form = document.getElementById("sondage");
+  var vote = {}, manquantes = [];
+
+  var coches = form.querySelectorAll('input[name="q1"]:checked');
+  if(coches.length === 0){ manquantes.push("Q1"); }
+  vote.q1 = Array.prototype.map.call(coches, function(c){ return c.value; });
+
+  ["q2","q3","q4","q5"].forEach(function(nom){
+    var choix = form.querySelector('input[name="' + nom + '"]:checked');
+    if(!choix){ manquantes.push(nom.toUpperCase()); }
+    vote[nom] = choix ? choix.value : null;
+  });
+
+  return {vote: vote, manquantes: manquantes};
+}
+
+function afficherMerci(){
+  document.getElementById("bloc-vote").hidden = true;
+  document.getElementById("merci").hidden = false;
+}
+
+function envoyer(e){
+  e.preventDefault();
+  var erreur = document.getElementById("erreur");
+  var bouton = document.getElementById("envoyer");
+
+  if(dejaVote()){
+    erreur.textContent = "Ce téléphone a déjà voté. Merci !";
+    return;
+  }
+
+  var lu = lireFormulaire();
+  if(lu.manquantes.length > 0){
+    erreur.textContent = "Merci de répondre à toutes les questions (" + lu.manquantes.join(", ") + ").";
+    return;
+  }
+
+  if(!configuree()){
+    erreur.textContent = "Le service de collecte n'est pas encore configuré : le vote ne peut pas être enregistré.";
+    return;
+  }
+
+  erreur.textContent = "";
+  bouton.disabled = true;
+  bouton.textContent = "Envoi…";
+
+  fetch(pointDeCollecte(), {
+    method: "POST",
+    headers: entetes(),
+    body: JSON.stringify(lu.vote)
+  }).then(function(r){
+    if(!r.ok){ throw new Error("HTTP " + r.status); }
+    marquerVote();
+    afficherMerci();
+  }).catch(function(){
+    bouton.disabled = false;
+    bouton.textContent = "Envoyer mon vote";
+    erreur.textContent = "Envoi impossible. Vérifiez la connexion et réessayez.";
+  });
+}
+
+/* ------------------------------------------------------------------
+   Comptage et affichage
+   ------------------------------------------------------------------ */
+function compter(votes){
+  var total = votes.length, parts = {};
+  QUESTIONS.forEach(function(q){
+    q.options.forEach(function(opt, i){
+      var n = 0;
+      votes.forEach(function(v){
+        if(!v){ return; }
+        if(q.type === "multi"){
+          var liste = v[q.id];
+          if(Object.prototype.toString.call(liste) === "[object Array]" && liste.indexOf(opt) !== -1){ n++; }
+        }else if(v[q.id] === opt){ n++; }
+      });
+      parts[cleOption(q.id, i)] = total > 0 ? n / total : 0;
+    });
+  });
+  return parts;
+}
+
+function peindre(parts){
+  QUESTIONS.forEach(function(q){
+    q.options.forEach(function(opt, i){
+      var id = cleOption(q.id, i), p = parts[id] || 0;
+      var creme = document.getElementById(id + "-c");
+      var pct = document.getElementById(id + "-t");
+      if(creme){ creme.style.transform = "translateY(" + (COURSE_CREME * (1 - p)).toFixed(2) + "px)"; }
+      if(pct){ pct.textContent = Math.round(p * 100) + " %"; }
+    });
+  });
+}
+
+function vider(){
+  QUESTIONS.forEach(function(q){
+    q.options.forEach(function(opt, i){
+      var creme = document.getElementById(cleOption(q.id, i) + "-c");
+      if(creme){ creme.style.transform = "translateY(" + REPOS_CREME + "px)"; }
+    });
+  });
+}
+
+function charger(){
+  var etat = document.getElementById("etat-resultats");
+
+  if(!configuree()){
+    etat.textContent = "Résultats indisponibles : le service de collecte n'est pas encore configuré.";
+    return;
+  }
+
+  fetch(pointDeCollecte() + "?select=q1,q2,q3,q4,q5", {
+    headers: entetes(), cache: "no-store"
+  }).then(function(r){
+    if(!r.ok){ throw new Error("HTTP " + r.status); }
+    return r.json();
+  }).then(function(data){
+    var votes = Object.prototype.toString.call(data) === "[object Array]" ? data : [];
+    peindre(compter(votes));
+    etat.textContent = votes.length === 0
+      ? "Aucun vote pour le moment. Mise à jour automatique toutes les 5 secondes."
+      : votes.length + (votes.length > 1 ? " votes" : " vote") + " · mise à jour automatique toutes les 5 secondes.";
+  }).catch(function(){
+    etat.textContent = "Résultats indisponibles pour le moment.";
+  });
+}
+
+/* ------------------------------------------------------------------
+   Révélation : remise à zéro sans transition, reflow, réactivation,
+   puis chargement des données réelles.
+   ------------------------------------------------------------------ */
+var minuteur = null;
+
+function reveler(){
+  var section = document.getElementById("resultats");
+  section.style.display = "block";
+
+  section.classList.add("sans-transition");
+  vider();
+  void section.offsetHeight;          /* reflow : la position de repos est appliquée */
+  section.classList.remove("sans-transition");
+
+  charger();
+  if(minuteur === null){ minuteur = setInterval(charger, DELAI_RAFRAICHISSEMENT); }
+  section.scrollIntoView({behavior: "smooth", block: "start"});
+}
+
+/* ------------------------------------------------------------------ */
+tracerContours();
+construireEntete();
+construireBlocs();
+document.getElementById("sondage").addEventListener("submit", envoyer);
+document.getElementById("revele").addEventListener("click", reveler);
+document.getElementById("revele-merci").addEventListener("click", reveler);
+
+if(MODE_ECRAN){
+  /* Écran de projection : pas de formulaire, un seul bouton. */
+  document.body.classList.add("ecran");
+  document.getElementById("sondage").hidden = true;
+  document.getElementById("merci").hidden = true;
+  document.getElementById("revele-merci").hidden = true;
+  document.getElementById("revele").classList.remove("bouton-secondaire");
+  document.querySelector(".consigne").textContent =
+    "Écran de projection. Cliquez sur le bouton quand tout le monde a voté.";
+}else{
+  /* Téléphone : on vote, et c'est tout. */
+  document.getElementById("revele").hidden = true;
+  document.getElementById("revele-merci").hidden = true;
+  if(dejaVote()){ afficherMerci(); }
+}
+</script>
+</body>
+</html>
