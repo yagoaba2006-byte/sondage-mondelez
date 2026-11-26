@@ -357,14 +357,21 @@
 
 <script>
 /* ==================================================================
-   CONFIGURATION — les deux seules lignes à remplir, voir LISEZMOI
-   section 3. Tant que le mot VOTRE-PROJET est là, la page marche
-   mais n'enregistre rien et annonce « Résultats indisponibles » :
-   elle n'invente jamais de chiffres.
+   CONFIGURATION — rien à créer, aucun compte, aucune clé.
+
+   Les votes sont comptés par Abacus, un service de compteurs publics
+   et gratuits. Chaque réponse possible a son compteur, qu'un vote
+   fait monter d'une unité ; l'écran relit ces compteurs et remplit
+   les biscuits. Personne ne s'inscrit nulle part.
+
+   ESPACE est le nom sous lequel vos compteurs sont rangés. Il est
+   tiré au hasard pour que personne ne tombe dessus par accident et
+   ne fausse vos chiffres. Changez-le si vous refaites un sondage,
+   ou pour repartir de zéro après les essais : un nom neuf, c'est
+   des compteurs neufs.
    ================================================================== */
-var ADRESSE = "https://VOTRE-PROJET.supabase.co";
-var CLE     = "VOTRE-CLE-PUBLIQUE";
-var TABLE   = "votes";
+var ESPACE    = "mondelez-icn-g1-jrqoumtll4";
+var COMPTEURS = "https://abacus.jasoncameron.dev";
 /* ================================================================== */
 
 var CLE_VOTE = "mondelez_groupe1_vote";
@@ -406,10 +413,53 @@ var VOTES_DEMO = [
   {q1:["Oreo","Toblerone"],                        q2:"Peut-être", q3:"Impact"}
 ];
 
-function configuree(){ return ADRESSE.indexOf("VOTRE-PROJET") === -1; }
-function pointDeCollecte(){ return ADRESSE.replace(/\/+$/, "") + "/rest/v1/" + TABLE; }
-function entetes(){
-  return {"apikey": CLE, "Authorization": "Bearer " + CLE, "Content-Type": "application/json"};
+/* Un compteur par reponse, plus « votants » pour le total, qui sert
+   a calculer les pourcentages. */
+function incrementer(cle){
+  return fetch(COMPTEURS + "/hit/" + ESPACE + "/" + cle, {cache: "no-store"})
+    .then(function(r){
+      if(!r.ok){ throw new Error("HTTP " + r.status); }
+      return r.json();
+    });
+}
+
+/* Une reponse que personne n'a encore choisie n'a pas de compteur :
+   le service repond 404, ce qui vaut zero. Une vraie panne de
+   lecture rend null, et le biscuit concerne garde alors sa valeur
+   precedente plutot que de retomber a zero. */
+function lire(cle){
+  return fetch(COMPTEURS + "/get/" + ESPACE + "/" + cle, {cache: "no-store"})
+    .then(function(r){
+      if(r.status === 404){ return 0; }
+      if(!r.ok){ return null; }
+      return r.json().then(function(d){
+        return typeof d.value === "number" ? d.value : null;
+      });
+    })
+    .catch(function(){ return null; });
+}
+
+/* Les compteurs a faire monter pour un vote donne. */
+function clesDuVote(vote){
+  var cles = ["votants"];
+  QUESTIONS.forEach(function(q){
+    q.options.forEach(function(opt, i){
+      var choisie = q.type === "multi"
+        ? (vote[q.id] || []).indexOf(opt) !== -1
+        : vote[q.id] === opt;
+      if(choisie){ cles.push(cleOption(q.id, i)); }
+    });
+  });
+  return cles;
+}
+
+/* Tous les compteurs a relire pour afficher les resultats. */
+function toutesLesCles(){
+  var cles = ["votants"];
+  QUESTIONS.forEach(function(q){
+    q.options.forEach(function(opt, i){ cles.push(cleOption(q.id, i)); });
+  });
+  return cles;
 }
 
 var QUESTIONS = [
@@ -549,21 +599,13 @@ function envoyer(e){
     return;
   }
 
-  if(!configuree()){
-    erreur.textContent = "Le service de collecte n'est pas encore configuré : le vote ne peut pas être enregistré.";
-    return;
-  }
-
   erreur.textContent = "";
   bouton.disabled = true;
   bouton.textContent = "Envoi…";
 
-  fetch(pointDeCollecte(), {
-    method: "POST",
-    headers: entetes(),
-    body: JSON.stringify(lu.vote)
-  }).then(function(r){
-    if(!r.ok){ throw new Error("HTTP " + r.status); }
+  /* Un appel par compteur concerné : le total, et chaque réponse
+     choisie. Tous partent en même temps. */
+  Promise.all(clesDuVote(lu.vote).map(incrementer)).then(function(){
     marquerVote();
     afficherMerci();
   }).catch(function(){
@@ -597,7 +639,9 @@ function compter(votes){
 function peindre(parts){
   QUESTIONS.forEach(function(q){
     q.options.forEach(function(opt, i){
-      var id = cleOption(q.id, i), p = parts[id] || 0;
+      var id = cleOption(q.id, i);
+      if(!(id in parts)){ return; }      /* valeur inconnue : on laisse en place */
+      var p = parts[id];
       var creme = document.getElementById(id + "-c");
       var pct = document.getElementById(id + "-t");
       if(creme){ creme.style.transform = "translateY(" + (COURSE_CREME * (1 - p)).toFixed(2) + "px)"; }
@@ -619,31 +663,35 @@ function charger(){
   var etat = document.getElementById("etat-resultats");
 
   if(MODE_DEMO){
-    peindre(compter(VOTES_DEMO));
+    peindre(compter(VOTES_DEMO));   /* compter() ne sert plus qu'ici */
     etat.innerHTML = '<span class="compte">' + VOTES_DEMO.length +
       "</span> votes — chiffres inventés pour la répétition.";
     return;
   }
 
-  if(!configuree()){
-    etat.textContent = "Résultats indisponibles : le service de collecte n'est pas encore configuré.";
-    return;
-  }
+  var cles = toutesLesCles();
+  Promise.all(cles.map(lire)).then(function(valeurs){
+    var total = valeurs[0];
+    if(total === null){
+      etat.textContent = "Résultats momentanément indisponibles. Nouvelle tentative dans 5 secondes.";
+      return;
+    }
 
-  fetch(pointDeCollecte() + "?select=q1,q2,q3", {
-    headers: entetes(), cache: "no-store"
-  }).then(function(r){
-    if(!r.ok){ throw new Error("HTTP " + r.status); }
-    return r.json();
-  }).then(function(data){
-    var votes = Object.prototype.toString.call(data) === "[object Array]" ? data : [];
-    peindre(compter(votes));
-    etat.innerHTML = votes.length === 0
+    var parts = {};
+    cles.forEach(function(cle, i){
+      if(cle === "votants"){ return; }
+      var n = valeurs[i];
+      if(n === null){ return; }          /* lecture ratée : on ne touche pas ce biscuit */
+      parts[cle] = total > 0 ? n / total : 0;
+    });
+    peindre(parts);
+
+    etat.innerHTML = total === 0
       ? "En attente du premier vote. L'affichage se met à jour tout seul."
-      : '<span class="compte">' + votes.length + '</span> ' +
-        (votes.length > 1 ? "votes" : "vote") + " · l'affichage se met à jour tout seul.";
+      : '<span class="compte">' + total + '</span> ' +
+        (total > 1 ? "votes" : "vote") + " · l'affichage se met à jour tout seul.";
   }).catch(function(){
-    etat.textContent = "Résultats indisponibles pour le moment.";
+    etat.textContent = "Résultats momentanément indisponibles. Nouvelle tentative dans 5 secondes.";
   });
 }
 
