@@ -5,160 +5,177 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sondage Mondelēz — Groupe 1</title>
 <meta name="description" content="Sondage en direct pour l'oral Mondelēz International, ICN Business School, cours PPDE3017.">
-<meta name="theme-color" content="#4a2c1d">
+<meta name="theme-color" content="#7b4fa0">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%234a2c1d'/><circle cx='16' cy='16' r='9' fill='%23fbf3e4'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%234a2c1d'/><circle cx='16' cy='16' r='9' fill='%23f6f1e6'/></svg>">
 <style>
+  /* Direction « moderne » : fond blanc, un seul accent violet, angles
+     arrondis, sans-serif. Les neutres tirent legerement vers le violet
+     pour que l'ensemble se tienne. */
   :root{
+    --fond:#ffffff;
+    --surface:#f6f5f9;
+    --surface-forte:#f1ecf8;
+    --texte:#16161d;
+    --texte-doux:#6b6b7b;
+    --filet:#eceaf2;
+    --accent:#7b4fa0;
+    --accent-sombre:#683f8a;
+    --accent-pale:#f3edfa;
     --chocolat:#4a2c1d;
-    --chocolat-fonce:#351f14;
-    --caramel:#d99a3e;
-    --rose:#e4637f;
-    --creme:#fbf3e4;
-    --creme-vive:#fffaf0;
-    --gouttiere:clamp(14px,4vw,28px);
+    --gouttiere:clamp(16px,4vw,28px);
+    color-scheme:light;
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
-  /* .bouton impose display:block, qui l'emporterait sur le display:none
-     par defaut de [hidden] : sans ce !important, masquer un bouton avec
-     hidden resterait sans effet. */
   [hidden]{display:none !important}
   html{-webkit-text-size-adjust:100%}
   body{
-    background-color:var(--creme);
-    /* grain de papier : un bruit fractal calcule par le navigateur,
-       trois cents octets au lieu d'une image */
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.32 0 0 0 0 0.20 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23g)'/%3E%3C/svg%3E");
-    color:var(--chocolat);
-    font-family:Arial,Helvetica,sans-serif;
+    background:var(--fond);
+    color:var(--texte);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     font-size:16px;
-    line-height:1.5;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:var(--caramel);color:var(--chocolat-fonce)}
+  ::selection{background:var(--accent-pale);color:var(--accent-sombre)}
 
-  .page{max-width:620px;margin:0 auto;padding:var(--gouttiere) var(--gouttiere) 48px}
+  .page{max-width:580px;margin:0 auto;padding:var(--gouttiere) var(--gouttiere) 56px}
   .defs{position:absolute;width:0;height:0;overflow:hidden}
 
   /* ---------- en-tete ---------- */
-  header{
-    border:3px solid var(--chocolat);
-    background:var(--creme-vive);
-    box-shadow:7px 7px 0 var(--chocolat);
-    padding:20px 18px;
-    margin-bottom:26px;
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-  .visuel{flex:0 0 88px;width:88px;display:block}
+  header{display:flex;align-items:center;gap:16px;padding:8px 0 22px}
+  .visuel{flex:0 0 68px;width:68px;display:block}
   .visuel svg{width:100%;height:auto;display:block}
   header h1{
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:clamp(1.3rem,4.8vw,1.75rem);
-    line-height:1.15;
+    font-size:clamp(1.45rem,5.2vw,1.85rem);
+    line-height:1.12;
     font-weight:700;
+    letter-spacing:-.025em;
   }
-  .surtitre{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
-  .soustitre{font-size:.82rem;margin-top:7px}
+  .surtitre{
+    font-size:.7rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:7px;
+  }
+  .soustitre{font-size:.85rem;color:var(--texte-doux);margin-top:8px}
 
-  .consigne{border-left:6px solid var(--caramel);padding:9px 0 9px 13px;font-size:.9rem;margin-bottom:22px}
+  .bandeau-demo{
+    background:#fdecef;color:#9b2240;
+    border-radius:12px;padding:11px 15px;
+    font-size:.85rem;margin-bottom:18px;
+  }
+  .bandeau-demo strong{letter-spacing:.06em;text-transform:uppercase;font-size:.78rem}
+
+  .consigne{
+    background:var(--surface);
+    border-radius:14px;
+    padding:13px 16px;
+    font-size:.88rem;
+    color:var(--texte-doux);
+    margin-bottom:30px;
+  }
 
   /* ---------- questions ---------- */
-  fieldset{
-    border:3px solid var(--chocolat);
-    background:var(--creme-vive);
-    box-shadow:6px 6px 0 var(--caramel);
-    padding:16px 15px 14px;
-    margin-bottom:24px;
+  fieldset{border:0;padding:0;margin:0 0 28px}
+  legend{padding:0;margin-bottom:2px}
+  .numero{
+    display:inline-block;
+    background:var(--accent-pale);color:var(--accent-sombre);
+    font-size:.66rem;font-weight:700;letter-spacing:.08em;
+    padding:3px 8px;border-radius:7px;
+    margin-right:9px;vertical-align:2px;
   }
-  legend{
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:1.02rem;font-weight:700;
-    background:var(--chocolat);color:var(--creme);
-    padding:5px 11px;margin-left:-3px;
-  }
-  .numero{font-size:.78rem;letter-spacing:.1em;opacity:.8;margin-right:7px}
-  .aide{font-size:.78rem;opacity:.75;margin:9px 0 2px}
+  .intitule{font-size:1.02rem;font-weight:700;letter-spacing:-.015em}
+  .aide{font-size:.84rem;color:var(--texte-doux);margin:6px 0 0}
 
-  .options{list-style:none;margin-top:11px;display:grid;gap:8px}
+  .options{list-style:none;margin-top:13px;display:grid;gap:7px}
   .options label{
-    display:flex;align-items:center;gap:10px;
-    border:2px solid var(--chocolat);
-    background:var(--creme);
-    padding:10px 12px;cursor:pointer;font-size:.95rem;
+    display:flex;align-items:center;gap:12px;
+    background:var(--surface);
+    border-radius:13px;
+    padding:13px 15px;
+    cursor:pointer;font-size:.95rem;
+    transition:background .12s ease;
     -webkit-tap-highlight-color:transparent;
   }
+  .options label:hover{background:#efedf4}
   .options input{
     appearance:none;-webkit-appearance:none;
-    flex:0 0 18px;width:18px;height:18px;
-    border:2px solid var(--chocolat);
-    background:var(--creme-vive);margin:0;cursor:pointer;
+    flex:0 0 17px;width:17px;height:17px;
+    border:2px solid #c6c4d2;border-radius:50%;
+    background:var(--fond);margin:0;cursor:pointer;
+    transition:border-color .12s ease,background .12s ease;
   }
-  .options input[type=radio]{border-radius:50%}
-  .options input:checked{background:var(--rose);box-shadow:inset 0 0 0 3px var(--creme-vive)}
-  .options label:has(input:checked){background:var(--caramel);box-shadow:3px 3px 0 var(--chocolat)}
-  .options input:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+  .options input[type=checkbox]{border-radius:6px}
+  .options input:checked{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px var(--fond)}
+  .options input[type=checkbox]:checked{box-shadow:inset 0 0 0 2.5px var(--fond)}
+  .options label:has(input:checked){background:var(--surface-forte);box-shadow:inset 0 0 0 2px var(--accent)}
+  .options input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
   /* ---------- boutons ---------- */
   .bouton{
     display:block;width:100%;
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:1rem;font-weight:700;
-    padding:15px 16px;
-    border:3px solid var(--chocolat);
-    background:var(--rose);
-    color:var(--creme-vive);
-    box-shadow:6px 6px 0 var(--chocolat);
-    cursor:pointer;
+    font-family:inherit;font-size:1rem;font-weight:700;
+    padding:15px 18px;
+    border:0;border-radius:13px;
+    background:var(--accent);color:#fff;
+    cursor:pointer;letter-spacing:-.01em;
+    transition:background .12s ease;
   }
-  .bouton:active{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--chocolat)}
-  .bouton:focus-visible{outline:3px solid var(--caramel);outline-offset:3px}
-  .bouton[disabled]{opacity:.55;cursor:default}
+  .bouton:hover{background:var(--accent-sombre)}
+  .bouton:active{transform:translateY(1px)}
+  .bouton:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .bouton[disabled]{opacity:.5;cursor:default}
   .bouton-secondaire{
-    background:transparent;color:var(--chocolat);
-    box-shadow:4px 4px 0 var(--chocolat);
-    margin-top:18px;font-size:.95rem;
+    background:var(--surface);color:var(--texte);
+    margin-top:14px;font-size:.95rem;
   }
+  .bouton-secondaire:hover{background:#eceaf2}
 
-  .erreur{color:var(--rose);font-weight:700;font-size:.9rem;margin-top:14px}
+  .erreur{color:#c0392f;font-weight:600;font-size:.88rem;margin-top:14px}
   .erreur:empty{display:none}
 
   #merci{
-    border:3px solid var(--chocolat);
-    background:var(--caramel);
-    box-shadow:7px 7px 0 var(--chocolat);
-    padding:20px 18px;
+    background:var(--accent-pale);
+    border-radius:16px;
+    padding:24px 20px;
   }
-  #merci h2{font-family:Georgia,"Times New Roman",serif;font-size:1.25rem;margin-bottom:8px}
-  #merci p{font-size:.92rem}
+  #merci h2{font-size:1.2rem;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+  #merci p{font-size:.92rem;color:var(--texte-doux)}
 
   /* ---------- resultats ---------- */
-  #resultats{display:none;margin-top:36px}
+  #resultats{display:none;margin-top:38px}
   #resultats > h2{
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:clamp(1.3rem,4.6vw,1.6rem);
-    border-bottom:4px solid var(--chocolat);
-    padding-bottom:7px;
+    font-size:clamp(1.35rem,4.8vw,1.6rem);
+    font-weight:700;letter-spacing:-.025em;
   }
-  .etat{font-size:.8rem;opacity:.8;margin:9px 0 26px}
+  .etat{font-size:.82rem;color:var(--texte-doux);margin:6px 0 30px}
+  .etat .compte{
+    color:var(--accent);font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
 
-  .bloc-resultat{margin-bottom:32px}
+  .bloc-resultat{margin-bottom:34px}
   .bloc-resultat h3{
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:1rem;font-weight:700;margin-bottom:14px;
-    border-left:6px solid var(--rose);padding-left:11px;
+    font-size:.98rem;font-weight:700;letter-spacing:-.015em;
+    margin-bottom:16px;padding-bottom:9px;
+    border-bottom:1px solid var(--filet);
   }
   /* Une ligne par question : 3 options sur 3 colonnes, 4 sur 4, les
      8 marques de Q1 sur deux rangees de 4. */
-  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:16px 10px}
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:18px 10px}
   .grille[data-n="3"]{grid-template-columns:repeat(3,1fr)}
   .grille[data-n="4"]{grid-template-columns:repeat(4,1fr)}
   .grille[data-n="8"]{grid-template-columns:repeat(4,1fr)}
   .cellule{text-align:center}
-  .cellule svg{width:100%;height:auto;max-width:112px;display:block;margin:0 auto}
-  .pourcent{font-family:Georgia,"Times New Roman",serif;font-size:1.15rem;font-weight:700;margin-top:6px;line-height:1.1}
-  .etiquette{font-size:.76rem;line-height:1.25;margin-top:2px;overflow-wrap:break-word}
+  .cellule svg{width:100%;height:auto;max-width:104px;display:block;margin:0 auto}
+  .pourcent{
+    font-size:1.18rem;font-weight:700;letter-spacing:-.03em;
+    margin-top:9px;line-height:1.1;
+    font-variant-numeric:tabular-nums;
+  }
+  .etiquette{font-size:.76rem;line-height:1.3;margin-top:1px;color:var(--texte-doux);overflow-wrap:break-word}
 
   .creme-monte{
     transform:translateY(90px);
@@ -166,35 +183,44 @@
   }
   .sans-transition .creme-monte{transition:none}
 
-  footer{margin-top:40px;border-top:3px solid var(--chocolat);padding-top:13px;font-size:.74rem;opacity:.8}
+  footer{
+    margin-top:48px;padding-top:16px;
+    border-top:1px solid var(--filet);
+    font-size:.74rem;color:var(--texte-doux);
+  }
 
   /* Vue projection (adresse suivie de ?resultat) : tout grossit pour
      rester lisible du fond de la salle. */
   body.ecran .page{max-width:1180px}
-  body.ecran header{margin-bottom:18px}
-  body.ecran .cellule svg{max-width:152px}
-  body.ecran .pourcent{font-size:1.7rem;margin-top:10px}
+  body.ecran header{padding-bottom:16px}
+  body.ecran .cellule svg{max-width:150px}
+  body.ecran .pourcent{font-size:1.75rem;margin-top:12px}
   body.ecran .etiquette{font-size:1rem}
-  body.ecran .bloc-resultat{margin-bottom:42px}
-  body.ecran .bloc-resultat h3{font-size:1.35rem}
-  body.ecran #resultats > h2{font-size:2.2rem}
+  body.ecran .bloc-resultat{margin-bottom:46px}
+  body.ecran .bloc-resultat h3{font-size:1.3rem;padding-bottom:12px}
+  body.ecran #resultats > h2{font-size:2.3rem}
   body.ecran .etat{font-size:.95rem}
-  body.ecran .grille{gap:20px 26px;justify-content:center}
-  body.ecran .grille[data-n="3"]{grid-template-columns:repeat(3,180px)}
-  body.ecran .grille[data-n="4"]{grid-template-columns:repeat(4,180px)}
+  /* aligne a gauche comme les titres : centrer laissait un vide sous
+     les questions a trois ou quatre reponses */
+  body.ecran .grille{gap:22px 26px;justify-content:start}
+  body.ecran #revele{max-width:420px}
+  body.ecran .grille[data-n="3"]{grid-template-columns:repeat(3,178px)}
+  body.ecran .grille[data-n="4"]{grid-template-columns:repeat(4,178px)}
   @media (min-width:900px){
     body.ecran .grille[data-n="8"]{grid-template-columns:repeat(8,minmax(0,1fr))}
   }
 
   @media (max-width:420px){
-    header{flex-direction:column;align-items:flex-start;gap:12px}
-    .grille{gap:12px 7px}
-    .cellule svg{max-width:96px}
+    header{gap:13px}
+    .visuel{flex:0 0 56px;width:56px}
+    .grille{gap:14px 7px}
+    .cellule svg{max-width:92px}
     .pourcent{font-size:1.05rem}
     .etiquette{font-size:.72rem}
   }
   @media (prefers-reduced-motion:reduce){
     .creme-monte{transition:none}
+    .bouton,.options label,.options input{transition:none}
     .bouton:active{transform:none}
   }
 </style>
@@ -226,6 +252,11 @@
 
   <pattern id="t-cacao" patternUnits="userSpaceOnUse" width="105" height="105">
     <rect width="105" height="105" filter="url(#f-cacao)"/></pattern>
+  <!-- Grain de cacao : motif « asfalt-dark » de transparenttextures.com,
+       pose par-dessus le relief calcule. Il densifie la matiere la ou
+       le bruit seul restait un peu lisse. -->
+  <pattern id="t-grain" patternUnits="userSpaceOnUse" width="52" height="52">
+    <image href="data:image/png;base64,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" x="0" y="0" width="52" height="52"/></pattern>
   <pattern id="t-puits" patternUnits="userSpaceOnUse" width="105" height="105">
     <rect width="105" height="105" filter="url(#f-puits)"/></pattern>
   <pattern id="t-creme" patternUnits="userSpaceOnUse" width="105" height="105">
@@ -245,6 +276,10 @@
 
 <div class="page">
 
+<p class="bandeau-demo" id="bandeau-demo" hidden>
+  <strong>Répétition</strong> — chiffres inventés pour l'essai. Ce ne sont pas de vraies réponses.
+</p>
+
 <header>
   <span class="visuel" id="visuel-entete"></span>
   <div>
@@ -254,13 +289,13 @@
   </div>
 </header>
 
-<p class="consigne">Cinq questions, moins d'une minute. Un seul vote par téléphone. Les résultats s'affichent au tableau.</p>
+<p class="consigne">Trois questions, moins d'une minute. Un seul vote par téléphone. Les résultats s'affichent au tableau.</p>
 
 <section id="bloc-vote">
   <form id="sondage" novalidate>
 
     <fieldset>
-      <legend><span class="numero">Q1</span>Marques connues</legend>
+      <legend><span class="numero">Q1</span><span class="intitule">Marques connues</span></legend>
       <p class="aide">Parmi ces marques, lesquelles connaissez-vous ? Plusieurs réponses possibles.</p>
       <div class="options">
         <label><input type="checkbox" name="q1" value="Oreo"> Oreo</label>
@@ -275,7 +310,7 @@
     </fieldset>
 
     <fieldset>
-      <legend><span class="numero">Q2</span>Travailler chez Mondelēz</legend>
+      <legend><span class="numero">Q2</span><span class="intitule">Travailler chez Mondelēz</span></legend>
       <p class="aide">Aimeriez-vous travailler chez Mondelēz après vos études ?</p>
       <div class="options">
         <label><input type="radio" name="q2" value="Oui"> Oui</label>
@@ -285,34 +320,13 @@
     </fieldset>
 
     <fieldset>
-      <legend><span class="numero">Q3</span>Fréquence d'achat</legend>
-      <p class="aide">À quelle fréquence achetez-vous du chocolat ou des biscuits ?</p>
-      <div class="options">
-        <label><input type="radio" name="q3" value="Chaque semaine"> Chaque semaine</label>
-        <label><input type="radio" name="q3" value="Chaque mois"> Chaque mois</label>
-        <label><input type="radio" name="q3" value="Rarement"> Rarement</label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend><span class="numero">Q4</span>Critère employeur</legend>
+      <legend><span class="numero">Q3</span><span class="intitule">Critère employeur</span></legend>
       <p class="aide">Quel critère compte le plus pour vous chez un employeur ?</p>
       <div class="options">
-        <label><input type="radio" name="q4" value="Salaire"> Salaire</label>
-        <label><input type="radio" name="q4" value="Évolution"> Évolution</label>
-        <label><input type="radio" name="q4" value="Impact"> Impact</label>
-        <label><input type="radio" name="q4" value="Ambiance"> Ambiance</label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend><span class="numero">Q5</span>Engagements RSE</legend>
-      <p class="aide">Selon vous, Mondelēz tient-il ses engagements RSE ?</p>
-      <div class="options">
-        <label><input type="radio" name="q5" value="Oui"> Oui</label>
-        <label><input type="radio" name="q5" value="Partiellement"> Partiellement</label>
-        <label><input type="radio" name="q5" value="Non"> Non</label>
-        <label><input type="radio" name="q5" value="Sans avis"> Sans avis</label>
+        <label><input type="radio" name="q3" value="Salaire"> Salaire</label>
+        <label><input type="radio" name="q3" value="Évolution"> Évolution</label>
+        <label><input type="radio" name="q3" value="Impact"> Impact</label>
+        <label><input type="radio" name="q3" value="Ambiance"> Ambiance</label>
       </div>
     </fieldset>
 
@@ -336,7 +350,7 @@
 </section>
 
 <footer>
-  <p>Oral de groupe PPDE3017 « My future career » · ICN Business School. Page réalisée par le groupe 1 pour le cours ; aucune affiliation avec Mondelēz International. Illustrations dessinées pour cette page.</p>
+  <p>Oral de groupe PPDE3017 « My future career » · ICN Business School. Page réalisée par le groupe 1 pour le cours ; aucune affiliation avec Mondelēz International. Illustrations dessinées pour cette page ; grain des biscuits d'après un motif de transparenttextures.com.</p>
 </footer>
 
 </div>
@@ -356,10 +370,41 @@ var TABLE   = "votes";
 var CLE_VOTE = "mondelez_groupe1_vote";
 var DELAI_RAFRAICHISSEMENT = 5000;
 
+/* Comment l'ecran de projection montre les resultats.
+   "direct" : ils sont affiches des l'ouverture et se remplissent tout
+              seuls, la creme montant a chaque vote qui arrive. C'est
+              le vrai sondage en direct, sans rien a cliquer.
+   "bouton" : l'ecran attend un clic pour tout reveler d'un coup, ce
+              qui garde le suspense mais demande une manipulation.
+   A savoir : en direct, la salle voit les reponses pendant qu'elle
+   vote, ce qui influence les derniers votants. */
+var REVELATION = "direct";
+
 /* Un seul fichier, deux usages. Les téléphones ouvrent l'adresse nue :
    ils votent, et ne voient jamais les résultats. L'écran de projection
    ouvre la même adresse suivie de ?resultat. */
-var MODE_ECRAN = location.search.indexOf("resultat") !== -1;
+var MODE_ECRAN = location.search.indexOf("resultat") !== -1 ||
+                 location.search.indexOf("demo") !== -1;
+
+/* Mode repetition : ouvrir l'adresse suivie de ?demo affiche l'ecran
+   de projection rempli de chiffres inventes, pour repeter l'oral avant
+   que le service de collecte existe. Un bandeau rouge le dit, et la
+   page ne fait appel a aucun serveur dans ce mode. */
+var MODE_DEMO = location.search.indexOf("demo") !== -1;
+var VOTES_DEMO = [
+  {q1:["Oreo","LU","Milka","Prince"],              q2:"Peut-être", q3:"Ambiance"},
+  {q1:["Oreo","Milka","Toblerone"],                q2:"Oui",       q3:"Impact"},
+  {q1:["Oreo","LU","Tuc","Côte d'Or"],             q2:"Peut-être", q3:"Salaire"},
+  {q1:["Oreo","Prince"],                           q2:"Non",       q3:"Évolution"},
+  {q1:["Oreo","LU","Milka","Côte d'Or","Prince"],  q2:"Oui",       q3:"Ambiance"},
+  {q1:["Oreo","Milka"],                            q2:"Peut-être", q3:"Ambiance"},
+  {q1:["Oreo","LU","Prince","Toblerone"],          q2:"Oui",       q3:"Impact"},
+  {q1:["Oreo","Côte d'Or","Milka"],                q2:"Peut-être", q3:"Salaire"},
+  {q1:["Oreo","LU"],                               q2:"Non",       q3:"Ambiance"},
+  {q1:["Oreo","Milka","Prince","Tuc"],             q2:"Peut-être", q3:"Évolution"},
+  {q1:["Oreo","LU","Milka"],                       q2:"Oui",       q3:"Ambiance"},
+  {q1:["Oreo","Toblerone"],                        q2:"Peut-être", q3:"Impact"}
+];
 
 function configuree(){ return ADRESSE.indexOf("VOTRE-PROJET") === -1; }
 function pointDeCollecte(){ return ADRESSE.replace(/\/+$/, "") + "/rest/v1/" + TABLE; }
@@ -368,11 +413,9 @@ function entetes(){
 }
 
 var QUESTIONS = [
-  {id:"q1", type:"multi",  titre:"Q1 — Marques connues",            options:["Oreo","LU","Milka","Côte d'Or","Prince","Tuc","Toblerone","Aucune"]},
-  {id:"q2", type:"unique", titre:"Q2 — Travailler chez Mondelēz",   options:["Oui","Peut-être","Non"]},
-  {id:"q3", type:"unique", titre:"Q3 — Fréquence d'achat",          options:["Chaque semaine","Chaque mois","Rarement"]},
-  {id:"q4", type:"unique", titre:"Q4 — Critère employeur",          options:["Salaire","Évolution","Impact","Ambiance"]},
-  {id:"q5", type:"unique", titre:"Q5 — Engagements RSE",            options:["Oui","Partiellement","Non","Sans avis"]}
+  {id:"q1", type:"multi",  titre:"Q1 — Marques connues",          options:["Oreo","LU","Milka","Côte d'Or","Prince","Tuc","Toblerone","Aucune"]},
+  {id:"q2", type:"unique", titre:"Q2 — Travailler chez Mondelēz", options:["Oui","Peut-être","Non"]},
+  {id:"q3", type:"unique", titre:"Q3 — Critère employeur",        options:["Salaire","Évolution","Impact","Ambiance"]}
 ];
 
 /* Course utile de la crème, en unités du viewBox 0 0 105 105. */
@@ -423,6 +466,7 @@ function biscuitSVG(id, etiquette){
       '</g>' +
       '<circle cx="52" cy="52" r="33.4" fill="url(#creux)"/>' +
       '<use href="#couronne" fill="url(#t-cacao)"/>' +
+      '<use href="#couronne" fill="url(#t-grain)"/>' +
     '</svg>';
 }
 
@@ -475,7 +519,7 @@ function lireFormulaire(){
   if(coches.length === 0){ manquantes.push("Q1"); }
   vote.q1 = Array.prototype.map.call(coches, function(c){ return c.value; });
 
-  ["q2","q3","q4","q5"].forEach(function(nom){
+  ["q2","q3"].forEach(function(nom){
     var choix = form.querySelector('input[name="' + nom + '"]:checked');
     if(!choix){ manquantes.push(nom.toUpperCase()); }
     vote[nom] = choix ? choix.value : null;
@@ -574,12 +618,19 @@ function vider(){
 function charger(){
   var etat = document.getElementById("etat-resultats");
 
+  if(MODE_DEMO){
+    peindre(compter(VOTES_DEMO));
+    etat.innerHTML = '<span class="compte">' + VOTES_DEMO.length +
+      "</span> votes — chiffres inventés pour la répétition.";
+    return;
+  }
+
   if(!configuree()){
     etat.textContent = "Résultats indisponibles : le service de collecte n'est pas encore configuré.";
     return;
   }
 
-  fetch(pointDeCollecte() + "?select=q1,q2,q3,q4,q5", {
+  fetch(pointDeCollecte() + "?select=q1,q2,q3", {
     headers: entetes(), cache: "no-store"
   }).then(function(r){
     if(!r.ok){ throw new Error("HTTP " + r.status); }
@@ -587,9 +638,10 @@ function charger(){
   }).then(function(data){
     var votes = Object.prototype.toString.call(data) === "[object Array]" ? data : [];
     peindre(compter(votes));
-    etat.textContent = votes.length === 0
-      ? "Aucun vote pour le moment. Mise à jour automatique toutes les 5 secondes."
-      : votes.length + (votes.length > 1 ? " votes" : " vote") + " · mise à jour automatique toutes les 5 secondes.";
+    etat.innerHTML = votes.length === 0
+      ? "En attente du premier vote. L'affichage se met à jour tout seul."
+      : '<span class="compte">' + votes.length + '</span> ' +
+        (votes.length > 1 ? "votes" : "vote") + " · l'affichage se met à jour tout seul.";
   }).catch(function(){
     etat.textContent = "Résultats indisponibles pour le moment.";
   });
@@ -624,14 +676,24 @@ document.getElementById("revele").addEventListener("click", reveler);
 document.getElementById("revele-merci").addEventListener("click", reveler);
 
 if(MODE_ECRAN){
-  /* Écran de projection : pas de formulaire, un seul bouton. */
+  /* Écran de projection : pas de formulaire. */
   document.body.classList.add("ecran");
   document.getElementById("sondage").hidden = true;
   document.getElementById("merci").hidden = true;
   document.getElementById("revele-merci").hidden = true;
-  document.getElementById("revele").classList.remove("bouton-secondaire");
-  document.querySelector(".consigne").textContent =
-    "Écran de projection. Cliquez sur le bouton quand tout le monde a voté.";
+
+  if(MODE_DEMO){ document.getElementById("bandeau-demo").hidden = false; }
+
+  if(REVELATION === "direct"){
+    document.getElementById("revele").hidden = true;
+    document.querySelector(".consigne").textContent =
+      "Écran de projection. Les résultats se remplissent à mesure que la salle vote.";
+    reveler();
+  }else{
+    document.getElementById("revele").classList.remove("bouton-secondaire");
+    document.querySelector(".consigne").textContent =
+      "Écran de projection. Cliquez sur le bouton quand tout le monde a voté.";
+  }
 }else{
   /* Téléphone : on vote, et c'est tout. */
   document.getElementById("revele").hidden = true;
