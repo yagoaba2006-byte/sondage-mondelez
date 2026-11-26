@@ -183,6 +183,14 @@
   }
   .sans-transition .creme-monte{transition:none}
 
+  .lien-ecran{margin-bottom:12px}
+  .lien-ecran a{
+    color:var(--accent);font-weight:700;font-size:.9rem;
+    text-decoration:none;
+  }
+  .lien-ecran a:hover{text-decoration:underline}
+  .lien-ecran a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
   footer{
     margin-top:48px;padding-top:16px;
     border-top:1px solid var(--filet);
@@ -289,44 +297,44 @@
   </div>
 </header>
 
-<p class="consigne">Trois questions, moins d'une minute. Un seul vote par téléphone. Les résultats s'affichent au tableau.</p>
+<p class="consigne">Trois questions, trente secondes. Un seul vote par téléphone. Les résultats s'affichent au tableau.</p>
 
 <section id="bloc-vote">
   <form id="sondage" novalidate>
 
     <fieldset>
-      <legend><span class="numero">Q1</span><span class="intitule">Marques connues</span></legend>
-      <p class="aide">Parmi ces marques, lesquelles connaissez-vous ? Plusieurs réponses possibles.</p>
+      <legend><span class="numero">Q1</span><span class="intitule">À qui sont ces marques ?</span></legend>
+      <p class="aide">Lesquelles appartiennent à Mondelēz ? Plusieurs réponses possibles.</p>
       <div class="options">
         <label><input type="checkbox" name="q1" value="Oreo"> Oreo</label>
-        <label><input type="checkbox" name="q1" value="LU"> LU</label>
+        <label><input type="checkbox" name="q1" value="Kinder"> Kinder</label>
         <label><input type="checkbox" name="q1" value="Milka"> Milka</label>
-        <label><input type="checkbox" name="q1" value="Côte d'Or"> Côte d'Or</label>
-        <label><input type="checkbox" name="q1" value="Prince"> Prince</label>
-        <label><input type="checkbox" name="q1" value="Tuc"> Tuc</label>
+        <label><input type="checkbox" name="q1" value="Lindt"> Lindt</label>
+        <label><input type="checkbox" name="q1" value="LU"> LU</label>
+        <label><input type="checkbox" name="q1" value="Haribo"> Haribo</label>
         <label><input type="checkbox" name="q1" value="Toblerone"> Toblerone</label>
-        <label><input type="checkbox" name="q1" value="Aucune"> Aucune</label>
+        <label><input type="checkbox" name="q1" value="Côte d'Or"> Côte d'Or</label>
       </div>
     </fieldset>
 
     <fieldset>
-      <legend><span class="numero">Q2</span><span class="intitule">Travailler chez Mondelēz</span></legend>
-      <p class="aide">Aimeriez-vous travailler chez Mondelēz après vos études ?</p>
+      <legend><span class="numero">Q2</span><span class="intitule">Combien de salariés ?</span></legend>
+      <p class="aide">À votre avis, combien de personnes Mondelēz emploie-t-il dans le monde ?</p>
       <div class="options">
-        <label><input type="radio" name="q2" value="Oui"> Oui</label>
-        <label><input type="radio" name="q2" value="Peut-être"> Peut-être</label>
-        <label><input type="radio" name="q2" value="Non"> Non</label>
+        <label><input type="radio" name="q2" value="10 000"> Environ 10 000</label>
+        <label><input type="radio" name="q2" value="30 000"> Environ 30 000</label>
+        <label><input type="radio" name="q2" value="90 000"> Environ 90 000</label>
+        <label><input type="radio" name="q2" value="150 000"> Plus de 150 000</label>
       </div>
     </fieldset>
 
     <fieldset>
-      <legend><span class="numero">Q3</span><span class="intitule">Critère employeur</span></legend>
-      <p class="aide">Quel critère compte le plus pour vous chez un employeur ?</p>
+      <legend><span class="numero">Q3</span><span class="intitule">Une marque d'enfance</span></legend>
+      <p class="aide">Travailler pour une marque que vous mangez depuis l'enfance, c'est…</p>
       <div class="options">
-        <label><input type="radio" name="q3" value="Salaire"> Salaire</label>
-        <label><input type="radio" name="q3" value="Évolution"> Évolution</label>
-        <label><input type="radio" name="q3" value="Impact"> Impact</label>
-        <label><input type="radio" name="q3" value="Ambiance"> Ambiance</label>
+        <label><input type="radio" name="q3" value="Un vrai plus"> Un vrai plus</label>
+        <label><input type="radio" name="q3" value="Ça ne change rien"> Ça ne change rien</label>
+        <label><input type="radio" name="q3" value="Un risque de lassitude"> Un risque de lassitude</label>
       </div>
     </fieldset>
 
@@ -350,6 +358,7 @@
 </section>
 
 <footer>
+  <p class="lien-ecran" id="lien-ecran"><a href="?resultat">Voir les résultats du sondage →</a></p>
   <p>Oral de groupe PPDE3017 « My future career » · ICN Business School. Page réalisée par le groupe 1 pour le cours ; aucune affiliation avec Mondelēz International. Illustrations dessinées pour cette page ; grain des biscuits d'après un motif de transparenttextures.com.</p>
 </footer>
 
@@ -370,7 +379,7 @@
    ou pour repartir de zéro après les essais : un nom neuf, c'est
    des compteurs neufs.
    ================================================================== */
-var ESPACE    = "mondelez-icn-g1-jrqoumtll4";
+var ESPACE    = "mondelez-icn-g1-c6iet47tf4";
 var COMPTEURS = "https://abacus.jasoncameron.dev";
 /* ================================================================== */
 
@@ -399,18 +408,18 @@ var MODE_ECRAN = location.search.indexOf("resultat") !== -1 ||
    page ne fait appel a aucun serveur dans ce mode. */
 var MODE_DEMO = location.search.indexOf("demo") !== -1;
 var VOTES_DEMO = [
-  {q1:["Oreo","LU","Milka","Prince"],              q2:"Peut-être", q3:"Ambiance"},
-  {q1:["Oreo","Milka","Toblerone"],                q2:"Oui",       q3:"Impact"},
-  {q1:["Oreo","LU","Tuc","Côte d'Or"],             q2:"Peut-être", q3:"Salaire"},
-  {q1:["Oreo","Prince"],                           q2:"Non",       q3:"Évolution"},
-  {q1:["Oreo","LU","Milka","Côte d'Or","Prince"],  q2:"Oui",       q3:"Ambiance"},
-  {q1:["Oreo","Milka"],                            q2:"Peut-être", q3:"Ambiance"},
-  {q1:["Oreo","LU","Prince","Toblerone"],          q2:"Oui",       q3:"Impact"},
-  {q1:["Oreo","Côte d'Or","Milka"],                q2:"Peut-être", q3:"Salaire"},
-  {q1:["Oreo","LU"],                               q2:"Non",       q3:"Ambiance"},
-  {q1:["Oreo","Milka","Prince","Tuc"],             q2:"Peut-être", q3:"Évolution"},
-  {q1:["Oreo","LU","Milka"],                       q2:"Oui",       q3:"Ambiance"},
-  {q1:["Oreo","Toblerone"],                        q2:"Peut-être", q3:"Impact"}
+  {q1:["Oreo","Milka"],                       q2:"30 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","Milka","Kinder"],              q2:"10 000",  q3:"Ça ne change rien"},
+  {q1:["Oreo","Milka","LU","Lindt"],          q2:"30 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","Kinder","Haribo"],             q2:"90 000",  q3:"Un risque de lassitude"},
+  {q1:["Oreo","Milka","Toblerone"],           q2:"10 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","LU","Milka","Côte d'Or"],      q2:"30 000",  q3:"Ça ne change rien"},
+  {q1:["Oreo","Kinder"],                      q2:"10 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","Milka","Lindt","Haribo"],      q2:"30 000",  q3:"Un risque de lassitude"},
+  {q1:["Oreo","Milka","LU"],                  q2:"90 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","Toblerone","Kinder"],          q2:"30 000",  q3:"Ça ne change rien"},
+  {q1:["Oreo","Milka","Côte d'Or"],           q2:"10 000",  q3:"Un vrai plus"},
+  {q1:["Oreo","Milka","LU","Toblerone"],      q2:"150 000", q3:"Ça ne change rien"}
 ];
 
 /* Un compteur par reponse, plus « votants » pour le total, qui sert
@@ -463,9 +472,12 @@ function toutesLesCles(){
 }
 
 var QUESTIONS = [
-  {id:"q1", type:"multi",  titre:"Q1 — Marques connues",          options:["Oreo","LU","Milka","Côte d'Or","Prince","Tuc","Toblerone","Aucune"]},
-  {id:"q2", type:"unique", titre:"Q2 — Travailler chez Mondelēz", options:["Oui","Peut-être","Non"]},
-  {id:"q3", type:"unique", titre:"Q3 — Critère employeur",        options:["Salaire","Évolution","Impact","Ambiance"]}
+  {id:"q1", type:"multi",  titre:"Q1 — Lesquelles appartiennent à Mondelēz ?",
+   options:["Oreo","Kinder","Milka","Lindt","LU","Haribo","Toblerone","Côte d'Or"]},
+  {id:"q2", type:"unique", titre:"Q2 — Combien de salariés dans le monde ?",
+   options:["10 000","30 000","90 000","150 000"]},
+  {id:"q3", type:"unique", titre:"Q3 — Travailler pour une marque d'enfance",
+   options:["Un vrai plus","Ça ne change rien","Un risque de lassitude"]}
 ];
 
 /* Course utile de la crème, en unités du viewBox 0 0 105 105. */
@@ -743,11 +755,18 @@ if(MODE_ECRAN){
       "Écran de projection. Cliquez sur le bouton quand tout le monde a voté.";
   }
 }else{
-  /* Téléphone : on vote, et c'est tout. */
+  /* Téléphone : le formulaire d'abord. Le bouton des résultats
+     n'apparaît qu'une fois le vote envoyé, pour que personne ne voie
+     les réponses des autres avant d'avoir donné la sienne. */
   document.getElementById("revele").hidden = true;
-  document.getElementById("revele-merci").hidden = true;
+  document.getElementById("revele-merci").addEventListener("click", function(){
+    document.getElementById("merci").hidden = true;
+  });
   if(dejaVote()){ afficherMerci(); }
 }
+
+/* Le lien du pied de page ne sert qu'avant d'etre sur l'ecran. */
+if(MODE_ECRAN){ document.getElementById("lien-ecran").hidden = true; }
 </script>
 </body>
 </html>
